@@ -46,7 +46,7 @@ Summary of the variables in the "diabetes_012.csv" data set:
 
 First, we load all the necessary libraries for model creation and data analysis:
 
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(dplyr)
 library(caret)
@@ -55,10 +55,17 @@ library(gmodels)
 library(psych)
 ```
 
+library(**tidyverse**)\
+library(**dplyr**)\
+library(**caret**)\
+library(**class**)\
+library(**gmodels**)\
+library(**psych**)
+
 Then load the data set that was previously downloaded
 
 ```{r}
-folder <- dirname(rstudioapi :: getSourceEditorContext()$path)
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 parentFolder <- dirname (folder)
 data <- read.csv(paste0(folder,"/diabetes_012.csv"))
 ```

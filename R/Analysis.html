@@ -417,37 +417,14 @@ etc.<br />
 <h2>First part Data exploration and data wrangling</h2>
 <p>First, we load all the necessary libraries for model creation and
 data analysis:</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>library(dplyr)
-library(caret)</code></pre>
-<pre><code>## Loading required package: lattice
-## 
-## Attaching package: &#39;caret&#39;
-## 
-## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     lift</code></pre>
-<pre class="r"><code>library(class)
-library(gmodels)
-library(psych)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;psych&#39;
-## 
-## The following objects are masked from &#39;package:ggplot2&#39;:
-## 
-##     %+%, alpha</code></pre>
+<p>library(<strong>tidyverse</strong>)<br />
+library(<strong>dplyr</strong>)<br />
+library(<strong>caret</strong>)<br />
+library(<strong>class</strong>)<br />
+library(<strong>gmodels</strong>)<br />
+library(<strong>psych</strong>)</p>
 <p>Then load the data set that was previously downloaded</p>
-<pre class="r"><code>folder &lt;- dirname(rstudioapi :: getSourceEditorContext()$path)
+<pre class="r"><code>folder &lt;- dirname(rstudioapi::getSourceEditorContext()$path)
 parentFolder &lt;- dirname (folder)
 data &lt;- read.csv(paste0(folder,&quot;/diabetes_012.csv&quot;))</code></pre>
 <p>so:</p>
