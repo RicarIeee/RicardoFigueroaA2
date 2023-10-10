@@ -1,13 +1,13 @@
 ---
-title: "Training Analysis with Knn, Linear Regression and Multilinear Regression"
-author: "Ricardo Arturo Figueroa - 82217"
-date: "2023-10-09"
+title: "Analysis_Knn"
+author: "Ricardo Arturo Figueroa"
+date: "2023-10-10"
 output:
   pdf_document: default
   html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -46,7 +46,7 @@ Summary of the variables in the "diabetes_012.csv" data set:
 
 First, we load all the necessary libraries for model creation and data analysis:
 
-```{r message=FALSE}
+```{r}
 library(tidyverse)
 library(dplyr)
 library(caret)
@@ -112,6 +112,8 @@ Regarding observations about the distributions:
 
 ## Second part KNN MODEL
 
+*Note: Only can view code in this first exercise, for view all code you can open "Training_Knn_Ml.R" in this same folder.*
+
 ### KNN models for predicting diabetes
 
 ```{r}
@@ -167,13 +169,15 @@ plot(KnnTry)
 
 4.  **plot(knnTry):** Finally, this line of code generates a plot that shows the performance of the trained k-NN model.
 
-```{r results= FALSE}
+```{r, include=FALSE}
 # Make Predictions
 knnPredict <- predict(KnnTry, newdata = test.data)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict, reference = test.data$Diabetes_012)
 
 ```
+
+![confusionMatrix_one](images/accuary_one.PNG){width="249"}
 
 In this code segment, we perform forecasts using the previously trained model known as k-Nearest Neighbors (k-NN) and then evaluate its performance. To compute the optimal value of K in this model, we make use of the "caret" library. This choice is based on the search for greater accuracy in the model.
 
@@ -205,14 +209,16 @@ The four values of the matrix are
 **False Negatives (FN)**: 105 - Instances incorrectly predicted as 0 (no diabetes).\
 **True Positives (TP)**: 344 - Instances correctly predicted as 1 (diabetes).
 
-```{r}
+```{r, include=FALSE}
 # CrossTable
 CrossTable(x = test.data$Diabetes_012,  y = knnPredict, prop.chisq = F)
 ```
 
+![CrossTable_one](images/knn-model1.PNG){width="364"}
+
 ### Second model
 
-```{r}
+```{r, include=FALSE}
 Predictions_remove <- c("AnyHealthcare", "NoDocbcCost", "DiffWalk", "Education", "Income")
 train.data2 <- train.data[, !(names(train.data) %in% Predictions_remove)]
 test.data2 <- test.data[, !(names(test.data) %in% Predictions_remove)]
@@ -223,6 +229,9 @@ KnnTry_2 <- train(Diabetes_012 ~ .
                  , method = "knn", trControl = Control
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
+```
+
+```{r}
 plot(KnnTry_2)
 ```
 
@@ -236,12 +245,14 @@ The code essentially removes five predictors ("AnyHealthcare," "NoDocbcCost," "D
 
 this code removes specific predictors from the data set and trains a k-NN model on the modified data with **5-fold cross-validation** while tuning the hyper-parameter (k) using a range of values to optimize the model's performance.
 
-```{r}
+```{r, include=FALSE}
 # Make Predictions
 knnPredict2 <- predict(KnnTry, newdata = test.data)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict, reference = test.data$Diabetes_012)
 ```
+
+![ConfusionMatrix_two](images/accuary_two.PNG){width="257"}
 
 **Accuracy:** The accuracy of the model is **73.33%**, indicating that 73.33% of the predictions made by the model are correct. This metric measures overall correctness.\
 **Kappa:** The Kappa value is **0.4668**, indicating moderate agreement between the model's predictions and the actual classes. It suggests that the model's performance is better than random chance, but there is still room for improvement. A higher Kappa value would indicate stronger agreement.\
@@ -254,23 +265,23 @@ confusionMatrix(data = knnPredict, reference = test.data$Diabetes_012)
 **Detection Prevalence**: Detection Prevalence is **44.56%**, representing the proportion of the dataset predicted as positive by the model.\
 **Balanced Accuracy**: Balanced Accuracy is **73.35%**, which takes into account both sensitivity and specificity and provides a balanced measure of model performance.
 
-```{r}
+```{r, include=FALSE}
 CrossTable(x = test.data2$HeartDiseaseorAttack, y = knnPredict2
            , prop.chisq = F)
 ```
 
 The confusion matrix provides a summary of the model's performance in classifying instances into two classes, 0 and 1. Here's what each part of the matrix represents:
 
-True Negative (TN): 306 - Instances correctly predicted as 0 (no diabetes).\
-False Positives (FP): 145 - Instances incorrectly predicted as 1 (diabetes).\
-False Negatives (FN): 95 - Instances incorrectly predicted as 0 (no diabetes).\
-True Positives (TP): 354 - Instances correctly predicted as 1 (diabetes).
+**True Negative (TN):** 306 - Instances correctly predicted as 0 (no diabetes).\
+**False Positives (FP):** 145 - Instances incorrectly predicted as 1 (diabetes).\
+**False Negatives (FN):** 95 - Instances incorrectly predicted as 0 (no diabetes).\
+**True Positives (TP):** 354 - Instances correctly predicted as 1 (diabetes).
 
 In summary, the confusion matrix together with the related metrics provide details about how the model performs in classifying instances into two categories, 0 (no diabetes) and 1 (diabetes). The performance of the model is acceptable, although there is room for improvement with the goal of achieving a higher Kappa value, which would indicate greater consistency between the predictions and the actual classes.
 
 ### Third experiment
 
-```{r}
+```{r, include=FALSE}
 Predictions_remove2 <- c("BMI", "MentHlth","PhysHlth", "Income", "Veggies")
 train.data3 <- train.data2[, !(names(train.data2) %in% Predictions_remove2)]
 test.data3 <- test.data2[, !(names(test.data2) %in% Predictions_remove2)]
@@ -281,6 +292,9 @@ KnnTry_3 <- train(Diabetes_012 ~ .
                  , method = "knn", trControl = Control2
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
+```
+
+```{r}
 plot(KnnTry_3)
 ```
 
@@ -288,7 +302,7 @@ In this part of the code, cross-validation is performed with 10 folds (specified
 
 The "**boot"** method or Bootstrap resampling is a technique that involves sampling with replacement of the training data to create multiple training data sets, and then training the model on each of these sets. The performance of the model is then evaluated on test data for each Bootstrap training data set.
 
-```{r}
+```{r, include=FALSE}
 # Make Predictions
 knnPredict3 <- predict(KnnTry_3, newdata = test.data3)
 # Creates the confusion matrix
@@ -315,7 +329,7 @@ Overall, Model 3 (with the predictors chosen in **train.data3**) is preferred du
 
 **Model 1**:
 
-```{r results=FALSE}
+```{r, include=FALSE}
 ## selection of 1500 samples of each factor of the dataset#
 set.seed(13)
 stratified_data <- data %>%
@@ -339,17 +353,19 @@ KnnTry <- train(HeartDiseaseorAttack ~ .
                 , method = "knn", trControl = Control
                 , preProcess = c("range") # c("center", "scale") for z-score
                 , tuneLength = 20)
-
-plot(KnnTry)
 # Make Predictions
 knnPredict <- predict(KnnTry, newdata = test.data)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict, reference = test.data$HeartDiseaseorAttack)
 ```
 
+```{r}
+plot(KnnTry)
+```
+
 **Model 2**:
 
-```{r results= FALSE}
+```{r, include=FALSE}
 ### second model
 
 Predictions_remove <- c("AnyHealthcare", "NoDocbcCost", "DiffWalk", "Education", "Income")
@@ -363,17 +379,19 @@ KnnTry_2 <- train(HeartDiseaseorAttack ~ .
                  , method = "knn", trControl = Control
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
-
-plot(KnnTry_2)
 # Make Predictions
 knnPredict2 <- predict(KnnTry_2, newdata = test.data2)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict2, reference = test.data2$HeartDiseaseorAttack)
 ```
 
+```{r}
+plot(KnnTry_2)
+```
+
 **Model 3**:
 
-```{r results=FALSE}
+```{r, include=FALSE}
 ### Third Model
 Predictions_remove2 <- c("ChoclCheck", "MentHlth","HvyAlcoholConsump", "Fruits", "Veggies")
 train.data3 <- train.data2[, !(names(train.data2) %in% Predictions_remove2)]
@@ -386,12 +404,14 @@ KnnTry_3 <- train(HeartDiseaseorAttack ~ .
                  , method = "knn", trControl = Control2
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
-
-plot(KnnTry_3)
 # Make Predictions
 knnPredict3 <- predict(KnnTry_3, newdata = test.data3)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict3, reference = test.data3$HeartDiseaseorAttack)
+```
+
+```{r}
+plot(KnnTry_3)
 ```
 
 **Model 1**:
@@ -420,7 +440,7 @@ Analysis:
 
 **Model 1:**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 ###KNN Models and Experiments to Find Sex #####################################################################
 
 
@@ -447,16 +467,19 @@ KnnTry <- train(Sex ~ .
                 , method = "knn", trControl = Control
                 , preProcess = c("range") # c("center", "scale") for z-score
                 , tuneLength = 20)
-plot(KnnTry)
 # Make Predictions
 knnPredict <- predict(KnnTry, newdata = test.data)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict, reference = test.data$Sex)
 ```
 
+```{r}
+plot(KnnTry)
+```
+
 **Model 2:**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 # second model
 Predictions_remove <- c("AnyHealthcare", "NoDocbcCost", "DiffWalk", "Age", "PhysActivity")
 train.data2 <- train.data[, !(names(train.data) %in% Predictions_remove)]
@@ -469,16 +492,19 @@ KnnTry_2 <- train(Sex ~ .
                  , method = "knn", trControl = Control
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
-plot(KnnTry_2)
 #Make Predictions
 knnPredict2 <- predict(KnnTry_2, newdata = test.data2)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict2, reference = test.data2$Sex)
 ```
 
+```{r}
+plot(KnnTry_2)
+```
+
 **Model 3:**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 ### Third Model
 Predictions_remove2 <- c("ChoclCheck", "MentHlth","HvyAlcoholConsump", "Fruits", "Veggies")
 train.data3 <- train.data2[, !(names(train.data2) %in% Predictions_remove2)]
@@ -491,11 +517,14 @@ KnnTry_3 <- train(Sex ~ .
                  , method = "knn", trControl = Control2
                  , preProcess = c("range") # c("center", "scale") for z-score
                  , tuneLength = 20)
-plot(KnnTry_3)
 #Make Predictions
 knnPredict3 <- predict(KnnTry_3, newdata = test.data3)
 # Creates the confusion matrix
 confusionMatrix(data = knnPredict3, reference = test.data3$Sex)
+```
+
+```{r}
+plot(KnnTry_3)
 ```
 
 The three models for predicting the sex of a person do not appear to be effective in this dataset. Here are the results for the three models:
@@ -528,7 +557,7 @@ Analysis:
 
 **Model 1:**
 
-```{r}
+```{r, include=FALSE}
 ### Linear regression model BMI #####################################################################################
 set.seed(13)
 stratified_data2 <- data[sample(nrow(data), 3000), ]
@@ -567,7 +596,7 @@ Additionally, it's worth noting that no data normalization was performed in this
 
 **Model 2:**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 #### second
 Predictions_remove <- c("AnyHealthcare", "CholCheck", "MentHlth", "Education", "Sex")
 train.data2 <- train.data[, !(names(train.data) %in% Predictions_remove)]
@@ -583,9 +612,11 @@ moderu <- train(BMI ~ ., data = train.data2, method = "lm",
 print(moderu)
 ```
 
+![Coeficientes_LinearRegression](images/Coeficientes_one_Ml.PNG){width="368"}
+
 **Model 3:**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 #### Third
 Predictions_remove <- c("Income", "Stroke", "NoDocbcCost", "Veggies", "HvyAlcoholConsump")
 
@@ -640,7 +671,7 @@ According to these criteria, **Model 3** seems to stand out among the three mode
 
 **Model 1**
 
-```{r results=FALSE }
+```{r, include=FALSE}
 ### Linear regression model MentHlth ################################################################################
 set.seed(13)
 stratified_data2 <- data[sample(nrow(data), 3000), ]
@@ -666,7 +697,7 @@ print(moderu)
 
 **Model 2**
 
-```{r results=FALSE }
+```{r, include=FALSE}
 ###Second
 Predictions_remove <- c("BMI", "HeartDiseaseorAttack", "Stroke", "PhysActivity", "CholCheck")
 
@@ -685,7 +716,7 @@ print(moderu)
 
 **Model 3**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 #### Third
 Predictions_remove <- c("Diabetes_012", "HighBP", "HighChol", "Veggies", "Education")
 
@@ -744,7 +775,7 @@ Therefore, in this particular situation, it is advantageous to restrict the pred
 
 **Model 1**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 #### Linear regression model PhysHlth ################################################################################
 set.seed(13)
 stratified_data3 <- data[sample(nrow(data), 3000), ]
@@ -769,7 +800,7 @@ print(moderu)
 
 **Model 2**
 
-```{r results=FALSE}
+```{r, include=FALSE}
 ###Second
 Predictions_remove <- c("Sex", "Diabetes_012", "Education", "CholCheck", "Smoker")
 
@@ -788,7 +819,7 @@ print(moderu)
 
 **Model 3**
 
-```{r results=FALSE }
+```{r, include=FALSE}
 #### Third
 Predictions_remove <- c("BMI", "HeartDiseaseorAttack", "PhysActivity", "Veggies", "Stroke")
 
